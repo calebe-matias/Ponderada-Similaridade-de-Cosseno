@@ -1,4 +1,4 @@
-Frase,Boa_pratica,dot_product,norm_frase,norm_bp,cosine
+Frase,Boa_pratica,produto_escalar,frase_norm,bp_norm,coseno
 F6,BP5,4,3.0,3.1623,0.4216
 F6,BP6,2,3.0,3.4641,0.1925
 F7,BP5,0,3.0,3.1623,0.0
