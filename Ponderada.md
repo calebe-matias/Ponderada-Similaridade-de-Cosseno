@@ -1,24 +1,22 @@
 # Similaridade de Cosseno aplicada à acessibilidade (relatório de aluno)
 
-A ponderada proposta pela professora Maria Cristina consiste em verificar quais frases consideradas “problemáticas” (no enunciado) estão **mais alinhadas** ou **mais distantes** de um pequeno conjunto de **boas práticas** (também do enunciado) de acessibilidade usando **vetorização de palavras** e **similaridade de cosseno**.
+A ponderada proposta pela professora Maria Cristina consiste em verificar quais frases consideradas “problemáticas” (segundo o enunciado) estão **mais alinhadas** ou **mais distantes** de um pequeno conjunto de **boas práticas** (também extraídas do enunciado) de acessibilidade usando **vetorização de palavras** e **similaridade de cosseno**.
 
 ---
 # 1. Monte o vocabulário comum
 
-*Leia todas as frases (conteúdos e boas práticas). Elabore uma lista única de palavras (sem acentos, minúsculas, sem repetições).*
-
-Eu li as cinco frases (3 problemáticas e 2 de boas práticas), normalizei tudo para **minúsculas**, **sem acentos** e **sem pontuação**, e depois separei por espaços. Não usei stemming/lematização (logo, `video` e `videos` são palavras diferentes). A partir disso, gerei **um único vocabulário** sem repetições.
+Lidas as cinco frases (3 problemáticas e 2 de boas práticas), normalizei tudo para minúsculas, sem acentos e sem pontuação, e depois separei por espaços. Assim, cheguei na seguinte lista de palavras:
 
 **Vocabulário obtido (38 palavras):**
+
 `a, acessar, adicione, com, conseguem, conteudo, de, deficiencia, descricao, e, em, esse, garanta, imagem, imagens, interprete, legenda, leitores, leitura, libras, nao, nem, o, os, ou, para, plataforma, por, possui, suporte, tela, tem, todos, traducao, usuarios, video, videos, visual`
 
 ---
 
 # 2. Construa a matriz de vetores
 
-*Para cada frase (3 conteúdos e 2 boas práticas), conte quantas vezes cada palavra do vocabulário aparece.*
-
-Abaixo está a **matriz TF** (frequência simples). Cada célula é o número de ocorrências da palavra (linha) em cada frase (coluna). As cinco colunas são: **F6**, **F7**, **F8** (frases problemáticas), e **BP5**, **BP6** (boas práticas).
+Abaixo está a **matriz TF** (frequência simples) que montei com base no vocabulário. Cada célula é o número de ocorrências da palavra (linha) em cada frase (coluna). As cinco colunas são: **F6**, **F7**, **F8** (frases problemáticas), e **BP5**, **BP6** (boas práticas). 
+(Pedi para o ChatGPT gerar esta tabela em MarkDown, com base na planilha que anexei neste repositório, para melhor visualização)
 
 | Palavra     | F6 | F7 | F8 | BP5 | BP6 |
 | ----------- | -: | -: | -: | --: | --: |
@@ -61,39 +59,37 @@ Abaixo está a **matriz TF** (frequência simples). Cada célula é o número de
 | videos      |  0 |  0 |  0 |   1 |   0 |
 | visual      |  0 |  1 |  0 |   0 |   0 |
 
-Para referência, os **comprimentos (normas)** dos vetores (raiz da soma dos quadrados das frequências) são:
+Assim, encontramos que as normas dos vetores (raiz da soma dos quadrados das frequências) são:
 
-* ||F6|| = √9 = **3,0000**
-* ||F7|| = √9 = **3,0000**
-* ||F8|| = √13 ≈ **3,6056**
-* ||BP5|| = √10 ≈ **3,1623**
-* ||BP6|| = √12 ≈ **3,4641**
+* ||F6|| = √9 = 3,0000
+* ||F7|| = √9 = 3,0000
+* ||F8|| = √13 ≈ 3,6056
+* ||BP5|| = √10 ≈ 3,1623
+* ||BP6|| = √12 ≈ 3,4641
 
 ---
 
 # 3. Calcule a similaridade de cosseno
 
-*Faça 6 cálculos (3 frases × 2 boas práticas).*
-
-A **similaridade de cosseno** entre dois vetores $A$ e $B$ é:
+A similaridade de cosseno entre dois vetores $A$ e $B$ é:
 
 $$
 \cos(A,B)=\frac{\sum_i A_i B_i}{\sqrt{\sum_i A_i^2}\cdot\sqrt{\sum_i B_i^2}}
 $$
 
-Na prática, o numerador (produto escalar) soma apenas as **palavras em comum**, multiplicando as frequências correspondentes.
+Na prática, o numerador (produto escalar) soma apenas as palavras em comum, multiplicando as frequências correspondentes.
 
 A seguir, descrevo um cálculo por extenso e depois listo os seis resultados.
 
-**Exemplo detalhado — F6 × BP5**
-Palavras em comum: `de(1×1)`, `interprete(1×1)`, `legenda(1×1)`, `libras(1×1)`.
-Produto escalar = 1+1+1+1 = **4**.
+*Aplicando à frase F6 e à boa prática BP5, por exemplo:*
+Temos as seguintes palavras em comum: `de(1×1)`, `interprete(1×1)`, `legenda(1×1)`, `libras(1×1)`.
+Produto escalar = 1+1+1+1 = 4.
 ||F6|| = 3,0000 ; ||BP5|| = 3,1623.
-$\cos(F6,BP5) = 4 / (3,0000 × 3,1623) = \mathbf{0,4216}$.
+Logo, $\cos(F6,BP5) = 4 / (3,0000 × 3,1623) = \mathbf{0,4216}$.
 
-**Resultados dos 6 cossenos:**
+**Tabela com os resultados dos 6 cossenos:**
 
-| Par      | Produto escalar | \|\|Frase\|\| | \|\|Boa\|\| | Similaridade |
+| Par      | Produto escalar | \|\|Frase\|\| | \|\|Boa Prática\|\| | Similaridade |
 | -------- | --------------: | ------------: | ----------: | -----------: |
 | F6 × BP5 |               4 |        3,0000 |      3,1623 |   **0,4216** |
 | F6 × BP6 |               2 |        3,0000 |      3,4641 |   **0,1925** |
@@ -106,15 +102,7 @@ $\cos(F6,BP5) = 4 / (3,0000 × 3,1623) = \mathbf{0,4216}$.
 
 # 4. Interprete os resultados
 
-*Qual frase está mais distante das boas práticas? Qual está mais próxima?*
-
-Falando de forma simples: **quanto maior** a similaridade, **mais próxima** a frase está da boa prática (maior sobreposição de termos); **quanto menor** (próximo de zero), **mais distante** ela está.
+Quanto maior a similaridade, mais próxima a frase está da boa prática; quanto menor (próximo de zero), mais distante ela está.
 
 * **Mais próxima:** a frase **F6** é a que melhor se aproxima das boas práticas, especialmente de **BP5** (cosseno **0,4216**). Isso acontece porque o vocabulário de F6 menciona exatamente os mesmos pilares de BP5 — *legenda*, *intérprete* e *Libras* — resultando em várias palavras em comum no produto escalar.
 * **Mais distante:** a frase **F7** é a mais distante, pois sua similaridade é **0,0000** tanto com **BP5** quanto com **BP6**. Ela fala de *deficiência visual*, *acessar* e *conteúdo*, mas **não compartilha termos** com as boas práticas fornecidas (que focam em *legendas*, *intérprete/Janela de Libras*, *descrição de imagens* e *leitura por leitores de tela*).
-
-**Resumo interpretativo:**
-
-* **Prioridade de correção:** comece por **F7**, incorporando termos e, principalmente, **ações** das boas práticas (ex.: “garantir descrição de imagens” e “leitura por leitores de tela”) para aumentar a aderência.
-* **F8** tem alguma aderência às duas boas práticas (por *libras*, *descricao*, *para*, *de*), ficando no meio do caminho.
-* **F6** já está razoavelmente alinhada com **BP5**, porque toca diretamente nos recursos de acessibilidade para pessoas surdas/usuárias de Libras (legenda e intérprete).
