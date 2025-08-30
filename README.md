@@ -79,8 +79,6 @@ $$
 
 Na prática, o numerador (produto escalar) soma apenas as palavras em comum, multiplicando as frequências correspondentes.
 
-A seguir, descrevo um cálculo por extenso e depois listo os seis resultados.
-
 *Aplicando à frase F6 e à boa prática BP5, por exemplo:*
 Temos as seguintes palavras em comum: `de(1×1)`, `interprete(1×1)`, `legenda(1×1)`, `libras(1×1)`.
 Produto escalar = 1+1+1+1 = 4.
