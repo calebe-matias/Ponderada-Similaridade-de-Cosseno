@@ -79,8 +79,7 @@ $$
 
 Na prática, o numerador (produto escalar) soma apenas as palavras em comum, multiplicando as frequências correspondentes.
 
-*Aplicando à frase F6 e à boa prática BP5, por exemplo:*
-Temos as seguintes palavras em comum: `de(1×1)`, `interprete(1×1)`, `legenda(1×1)`, `libras(1×1)`.
+Aplicando à frase F6 e à boa prática BP5, por exemplo, temos as seguintes palavras em comum: `de(1×1)`, `interprete(1×1)`, `legenda(1×1)`, `libras(1×1)`.
 Produto escalar = 1+1+1+1 = 4.
 ||F6|| = 3,0000 ; ||BP5|| = 3,1623.
 Logo, $\cos(F6,BP5) = 4 / (3,0000 × 3,1623) = \mathbf{0,4216}$.
@@ -104,3 +103,11 @@ Quanto maior a similaridade, mais próxima a frase está da boa prática; quanto
 
 * **Mais próxima:** a frase **F6** é a que melhor se aproxima das boas práticas, especialmente de **BP5** (cosseno **0,4216**). Isso acontece porque o vocabulário de F6 menciona exatamente os mesmos pilares de BP5 — *legenda*, *intérprete* e *Libras* — resultando em várias palavras em comum no produto escalar.
 * **Mais distante:** a frase **F7** é a mais distante, pois sua similaridade é **0,0000** tanto com **BP5** quanto com **BP6**. Ela fala de *deficiência visual*, *acessar* e *conteúdo*, mas **não compartilha termos** com as boas práticas fornecidas (que focam em *legendas*, *intérprete/Janela de Libras*, *descrição de imagens* e *leitura por leitores de tela*).
+
+
+---
+# Entregáveis
+
+* **a) Planilha com vocabulário e vetores (Excel):** [Download](vetores_vocabulario.xlsx)
+* **b) Cálculos das similaridades (CSV):** [Download](calculo_similaridades.csv)
+* **c) Resposta (qual pior e por quê):** **F7** é a pior por apresentar similaridade zero com as duas boas práticas fornecidas, indicando que não tem proximidade vetorial com as recomendações (legendas, intérprete de Libras, descrição de imagens, leitores de tela).
