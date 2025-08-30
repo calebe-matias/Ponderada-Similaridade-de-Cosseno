@@ -1,166 +1,120 @@
 # Similaridade de Cosseno aplicada à acessibilidade (relatório de aluno)
 
-A atividade consiste em verificar, com **vetorização de palavras** e **similaridade de cosseno**, quais frases “problemáticas” estão **mais alinhadas** ou **mais distantes** de um pequeno conjunto de **boas práticas** de acessibilidade.
+A ponderada proposta pela professora Maria Cristina consiste em verificar quais frases consideradas “problemáticas” (no enunciado) estão **mais alinhadas** ou **mais distantes** de um pequeno conjunto de **boas práticas** (também do enunciado) de acessibilidade usando **vetorização de palavras** e **similaridade de cosseno**.
 
 ---
+# 1. Monte o vocabulário comum
 
-## 1) Dados usados
+*Leia todas as frases (conteúdos e boas práticas). Elabore uma lista única de palavras (sem acentos, minúsculas, sem repetições).*
 
-**Frases problemáticas**
+Eu li as cinco frases (3 problemáticas e 2 de boas práticas), normalizei tudo para **minúsculas**, **sem acentos** e **sem pontuação**, e depois separei por espaços. Não usei stemming/lematização (logo, `video` e `videos` são palavras diferentes). A partir disso, gerei **um único vocabulário** sem repetições.
 
-* F6 — “Esse vídeo não possui legenda nem intérprete de Libras.”
-* F7 — “Usuários com deficiência visual não conseguem acessar o conteúdo.”
-* F8 — “A plataforma não tem suporte para tradução em Libras ou descrição de imagem.”
-
-**Boas práticas**
-
-* BP5 — “Adicione legenda e intérprete de Libras para todos os vídeos.”
-* BP6 — “Garanta descrição de imagens e leitura por leitores de tela.”
-
----
-
-## 2) Como eu pré-processei o texto
-
-Para conseguir comparar frases curtas de modo matemático, transformei cada frase em uma lista de palavras “limpas”. Fiz o seguinte:
-
-1. **Minúsculas** (ex.: “Vídeo” → “vídeo”).
-2. **Remoção de acentos** (ex.: “vídeo” → “video”; “Libras” fica “libras” mas sem acentos).
-3. **Remoção de pontuação** (vírgulas, pontos etc.).
-4. **Separação por espaços** (tokenização).
-5. **Sem** stemming/lematização: eu **não** reduzi palavras à raiz. Assim, “video” é diferente de “videos”.
-
-Com isso, as frases ficaram assim (exemplos, já sem acentos e em minúsculas):
-
-* **F6** → `esse video nao possui legenda nem interprete de libras`
-* **F7** → `usuarios com deficiencia visual nao conseguem acessar o conteudo`
-* **F8** → `a plataforma nao tem suporte para traducao em libras ou descricao de imagem`
-* **BP5** → `adicione legenda e interprete de libras para todos os videos`
-* **BP6** → `garanta descricao de imagens e leitura por leitores de tela`
-
-Em seguida, montei um **vocabulário comum**: é a lista única de todas as palavras que apareceram em qualquer frase (sem repetir). Ex.:
+**Vocabulário obtido (38 palavras):**
 `a, acessar, adicione, com, conseguem, conteudo, de, deficiencia, descricao, e, em, esse, garanta, imagem, imagens, interprete, legenda, leitores, leitura, libras, nao, nem, o, os, ou, para, plataforma, por, possui, suporte, tela, tem, todos, traducao, usuarios, video, videos, visual`
 
 ---
 
-## 3) Como eu transformei as frases em vetores
+# 2. Construa a matriz de vetores
 
-Cada frase virou um **vetor de frequências (TF)**: para **cada palavra do vocabulário**, eu conto **quantas vezes** ela aparece na frase.
+*Para cada frase (3 conteúdos e 2 boas práticas), conte quantas vezes cada palavra do vocabulário aparece.*
 
-Exemplo prático para duas frases, apenas nas palavras relevantes:
+Abaixo está a **matriz TF** (frequência simples). Cada célula é o número de ocorrências da palavra (linha) em cada frase (coluna). As cinco colunas são: **F6**, **F7**, **F8** (frases problemáticas), e **BP5**, **BP6** (boas práticas).
 
-* **F6** tem: `legenda:1`, `interprete:1`, `libras:1`, `de:1`, `video:1`, `nao:1`, `nem:1`, `possui:1`, `esse:1`.
-* **BP5** tem: `legenda:1`, `interprete:1`, `libras:1`, `de:1`, `para:1`, `todos:1`, `os:1`, `videos:1`, `adicione:1`, `e:1`.
+| Palavra     | F6 | F7 | F8 | BP5 | BP6 |
+| ----------- | -: | -: | -: | --: | --: |
+| a           |  0 |  0 |  1 |   0 |   0 |
+| acessar     |  0 |  1 |  0 |   0 |   0 |
+| adicione    |  0 |  0 |  0 |   1 |   0 |
+| com         |  0 |  1 |  0 |   0 |   0 |
+| conseguem   |  0 |  1 |  0 |   0 |   0 |
+| conteudo    |  0 |  1 |  0 |   0 |   0 |
+| de          |  1 |  0 |  1 |   1 |   2 |
+| deficiencia |  0 |  1 |  0 |   0 |   0 |
+| descricao   |  0 |  0 |  1 |   0 |   1 |
+| e           |  0 |  0 |  0 |   1 |   1 |
+| em          |  0 |  0 |  1 |   0 |   0 |
+| esse        |  1 |  0 |  0 |   0 |   0 |
+| garanta     |  0 |  0 |  0 |   0 |   1 |
+| imagem      |  0 |  0 |  1 |   0 |   0 |
+| imagens     |  0 |  0 |  0 |   0 |   1 |
+| interprete  |  1 |  0 |  0 |   1 |   0 |
+| legenda     |  1 |  0 |  0 |   1 |   0 |
+| leitores    |  0 |  0 |  0 |   0 |   1 |
+| leitura     |  0 |  0 |  0 |   0 |   1 |
+| libras      |  1 |  0 |  1 |   1 |   0 |
+| nao         |  1 |  1 |  1 |   0 |   0 |
+| nem         |  1 |  0 |  0 |   0 |   0 |
+| o           |  0 |  1 |  0 |   0 |   0 |
+| os          |  0 |  0 |  0 |   1 |   0 |
+| ou          |  0 |  0 |  1 |   0 |   0 |
+| para        |  0 |  0 |  1 |   1 |   0 |
+| plataforma  |  0 |  0 |  1 |   0 |   0 |
+| por         |  0 |  0 |  0 |   0 |   1 |
+| possui      |  1 |  0 |  0 |   0 |   0 |
+| suporte     |  0 |  0 |  1 |   0 |   0 |
+| tela        |  0 |  0 |  0 |   0 |   1 |
+| tem         |  0 |  0 |  1 |   0 |   0 |
+| todos       |  0 |  0 |  0 |   1 |   0 |
+| traducao    |  0 |  0 |  1 |   0 |   0 |
+| usuarios    |  0 |  1 |  0 |   0 |   0 |
+| video       |  1 |  0 |  0 |   0 |   0 |
+| videos      |  0 |  0 |  0 |   1 |   0 |
+| visual      |  0 |  1 |  0 |   0 |   0 |
 
-O vetor é, portanto, uma sequência de números (0, 1, 2, …) alinhada ao vocabulário.
-Para cálculo manual, como as contagens são pequenas, fica simples.
+Para referência, os **comprimentos (normas)** dos vetores (raiz da soma dos quadrados das frequências) são:
 
-Também calculei o **comprimento** (norma Euclidiana) de cada vetor, pois a fórmula do cosseno precisa disso. Como aqui as frequências são praticamente todas 0 ou 1 (exceto “de” em BP6, que aparece 2 vezes), as normas ficaram:
-
-* ||F6|| = √(9) = **3.0000**
-* ||F7|| = √(9) = **3.0000**
-* ||F8|| = √(13) ≈ **3.6056**
-* ||BP5|| = √(10) ≈ **3.1623**
-* ||BP6|| = √(12) ≈ **3.4641**  *(aqui conta “de” = 2, então entra 2² = 4 na soma)*
+* ||F6|| = √9 = **3,0000**
+* ||F7|| = √9 = **3,0000**
+* ||F8|| = √13 ≈ **3,6056**
+* ||BP5|| = √10 ≈ **3,1623**
+* ||BP6|| = √12 ≈ **3,4641**
 
 ---
 
-## 4) Como eu calculei a similaridade de cosseno
+# 3. Calcule a similaridade de cosseno
+
+*Faça 6 cálculos (3 frases × 2 boas práticas).*
 
 A **similaridade de cosseno** entre dois vetores $A$ e $B$ é:
 
 $$
-\text{cos}(A,B)=\frac{A\cdot B}{\|A\|\,\|B\|}
+\cos(A,B)=\frac{\sum_i A_i B_i}{\sqrt{\sum_i A_i^2}\cdot\sqrt{\sum_i B_i^2}}
 $$
 
-* O **produto escalar** $A\cdot B$ soma **apenas as palavras em comum**, multiplicando as contagens correspondentes.
-* Depois, divido pelo produto dos comprimentos (||A|| × ||B||).
+Na prática, o numerador (produto escalar) soma apenas as **palavras em comum**, multiplicando as frequências correspondentes.
 
-Fiz **seis cálculos** (3 frases × 2 boas práticas), sempre mostrando:
-palavras em comum → produto escalar → divisão pelas normas → resultado.
+A seguir, descrevo um cálculo por extenso e depois listo os seis resultados.
 
-### 4.1) F6 × BP5
+**Exemplo detalhado — F6 × BP5**
+Palavras em comum: `de(1×1)`, `interprete(1×1)`, `legenda(1×1)`, `libras(1×1)`.
+Produto escalar = 1+1+1+1 = **4**.
+||F6|| = 3,0000 ; ||BP5|| = 3,1623.
+$\cos(F6,BP5) = 4 / (3,0000 × 3,1623) = \mathbf{0,4216}$.
 
-* **Comuns:** `de(1×1)`, `interprete(1×1)`, `legenda(1×1)`, `libras(1×1)`
-* **Produto escalar:** 1 + 1 + 1 + 1 = **4**
-* **Normas:** ||F6|| = 3.0000 ; ||BP5|| = 3.1623
-* **Similaridade:** $4 / (3.0000 × 3.1623) = \mathbf{0.4216}$
+**Resultados dos 6 cossenos:**
 
-### 4.2) F6 × BP6
-
-* **Comuns:** `de(1×2)`
-* **Produto escalar:** **2**
-* **Normas:** 3.0000 e 3.4641
-* **Similaridade:** $2 / (3.0000 × 3.4641) = \mathbf{0.1925}$
-
-### 4.3) F7 × BP5
-
-* **Comuns:** *(nenhuma)*
-* **Produto escalar:** **0**
-* **Normas:** 3.0000 e 3.1623
-* **Similaridade:** **0.0000**
-
-### 4.4) F7 × BP6
-
-* **Comuns:** *(nenhuma)*
-* **Produto escalar:** **0**
-* **Normas:** 3.0000 e 3.4641
-* **Similaridade:** **0.0000**
-
-### 4.5) F8 × BP5
-
-* **Comuns:** `de(1×1)`, `libras(1×1)`, `para(1×1)`
-* **Produto escalar:** **3**
-* **Normas:** 3.6056 e 3.1623
-* **Similaridade:** $3 / (3.6056 × 3.1623) = \mathbf{0.2631}$
-
-### 4.6) F8 × BP6
-
-* **Comuns:** `de(1×2)`, `descricao(1×1)`
-* **Produto escalar:** **3**
-* **Normas:** 3.6056 e 3.4641
-* **Similaridade:** $3 / (3.6056 × 3.4641) = \mathbf{0.2402}$
-
-Para facilitar a leitura, aqui está o **quadro-resumo** com os valores finais (apenas números):
-
-| Frase |    BP5 |    BP6 |
-| ----- | -----: | -----: |
-| F6    | 0.4216 | 0.1925 |
-| F7    | 0.0000 | 0.0000 |
-| F8    | 0.2631 | 0.2402 |
+| Par      | Produto escalar | \|\|Frase\|\| | \|\|Boa\|\| | Similaridade |
+| -------- | --------------: | ------------: | ----------: | -----------: |
+| F6 × BP5 |               4 |        3,0000 |      3,1623 |   **0,4216** |
+| F6 × BP6 |               2 |        3,0000 |      3,4641 |   **0,1925** |
+| F7 × BP5 |               0 |        3,0000 |      3,1623 |   **0,0000** |
+| F7 × BP6 |               0 |        3,0000 |      3,4641 |   **0,0000** |
+| F8 × BP5 |               3 |        3,6056 |      3,1623 |   **0,2631** |
+| F8 × BP6 |               3 |        3,6056 |      3,4641 |   **0,2402** |
 
 ---
 
-## 5) O que esses números significam (interpretação)
+# 4. Interprete os resultados
 
-Quando a similaridade é **mais alta**, a frase problemática está **mais próxima** da linguagem das boas práticas. Quando é **baixa** (ou zero), está **mais distante**.
+*Qual frase está mais distante das boas práticas? Qual está mais próxima?*
 
-* **Mais próxima das boas práticas:** **F6**, especialmente em relação à **BP5** (0.4216).
-  Isso acontece porque F6 e BP5 compartilham diretamente as palavras-chave **“legenda”, “intérprete”, “Libras”** e **“de”**. Ou seja, F6, embora relate um problema (“não possui”), fala **exatamente dos recursos** apontados como recomendação.
+Falando de forma simples: **quanto maior** a similaridade, **mais próxima** a frase está da boa prática (maior sobreposição de termos); **quanto menor** (próximo de zero), **mais distante** ela está.
 
-* **Mais distante das boas práticas:** **F7**, tanto em relação a **BP5** quanto a **BP6** (**0.0000** com ambas).
-  F7 fala de **deficiência visual**, **acesso** e **conteúdo**, enquanto as boas práticas citadas tratam de **legendas e intérprete de Libras** (BP5) e de **descrição de imagens** e **leitura por leitores de tela** (BP6). Como o vocabulário **não se cruza**, o cosseno zera.
+* **Mais próxima:** a frase **F6** é a que melhor se aproxima das boas práticas, especialmente de **BP5** (cosseno **0,4216**). Isso acontece porque o vocabulário de F6 menciona exatamente os mesmos pilares de BP5 — *legenda*, *intérprete* e *Libras* — resultando em várias palavras em comum no produto escalar.
+* **Mais distante:** a frase **F7** é a mais distante, pois sua similaridade é **0,0000** tanto com **BP5** quanto com **BP6**. Ela fala de *deficiência visual*, *acessar* e *conteúdo*, mas **não compartilha termos** com as boas práticas fornecidas (que focam em *legendas*, *intérprete/Janela de Libras*, *descrição de imagens* e *leitura por leitores de tela*).
 
-* **F8** fica em posição intermediária, com sobreposição parcial a ambas:
-  com **BP5** por “**libras**”, “**para**”, “**de**”; com **BP6** por “**descricao**” e “**de**”.
+**Resumo interpretativo:**
 
-Se eu converter “similaridade” em uma ideia de **distância do cosseno** (1 − similaridade), F7 seria o caso **mais distante** de ambos os guias; e F6, o **mais próximo** de BP5.
-
----
-
-## 6) Conclusão (entregável “c”)
-
-* **Qual frase foi a pior e por quê?**
-  **F7** é a pior em relação às boas práticas dadas, pois sua similaridade de cosseno com **BP5** e **BP6** é **zero**. Isso indica **nenhum alinhamento lexical** com recomendações como **legendas**, **intérprete de Libras**, **descrição de imagens** e **leitores de tela**.
-  Uma reescrita de F7 deveria **introduzir explicitamente** esses recursos para aproximar o texto das recomendações (ex.: “garantir descrição de imagens e suporte completo a leitores de tela”).
-
-* **Qual está mais próxima?**
-  **F6** está mais próxima de **BP5**, pois usa **o mesmo vocabulário central** das recomendações (legendas, intérprete, Libras) — apesar de indicar ausência dos recursos, trata exatamente do que deve ser provido.
-
----
-
-## 7) O que eu entregaria (entregáveis “a” e “b”)
-
-1. **Planilha com vocabulário e vetores (TF)**: uma aba com o **vocabulário comum** nas linhas e as **frases** nas colunas, contendo as **contagens** (0/1/2).
-2. **Cálculos das similaridades**: outra aba (ou um bloco no próprio arquivo) com, para cada par **(Frase, BP)**, as **palavras em comum**, o **produto escalar**, as **normas** e a **similaridade** já numérica (os seis resultados mostrados acima).
-
-> Observação: este relatório já traz, por extenso, todo o **passo a passo** e os **valores numéricos** necessários para conferir a planilha. Se você quiser, eu também disponibilizo a planilha em Excel e o CSV de resultados.
+* **Prioridade de correção:** comece por **F7**, incorporando termos e, principalmente, **ações** das boas práticas (ex.: “garantir descrição de imagens” e “leitura por leitores de tela”) para aumentar a aderência.
+* **F8** tem alguma aderência às duas boas práticas (por *libras*, *descricao*, *para*, *de*), ficando no meio do caminho.
+* **F6** já está razoavelmente alinhada com **BP5**, porque toca diretamente nos recursos de acessibilidade para pessoas surdas/usuárias de Libras (legenda e intérprete).
