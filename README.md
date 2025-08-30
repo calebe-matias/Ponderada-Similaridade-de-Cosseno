@@ -108,6 +108,6 @@ Quanto maior a similaridade, mais próxima a frase está da boa prática; quanto
 ---
 # Entregáveis
 
-* **a) Planilha com vocabulário e vetores (Excel):** [Download](vetores_vocabulario.xlsx)
-* **b) Cálculos das similaridades (CSV):** [Download](calculo_similaridades.csv)
+* **a) Planilha com vocabulário e vetores (Excel):** [Link no próprio repositório](vetores_vocabulario.xlsx)
+* **b) Cálculos das similaridades (CSV):** [Link no próprio repositório](calculo_similaridades.csv)
 * **c) Resposta (qual pior e por quê):** **F7** é a pior por apresentar similaridade zero com as duas boas práticas fornecidas, indicando que não tem proximidade vetorial com as recomendações (legendas, intérprete de Libras, descrição de imagens, leitores de tela).
